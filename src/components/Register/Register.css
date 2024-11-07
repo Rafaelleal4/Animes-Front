@@ -1,0 +1,35 @@
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #3c3c3c; /* Cor de fundo do container */
+    border-radius: 10px;
+  }
+  
+  input[type="text"], input[type="password"] {
+    width: 300px;
+    padding: 10px;
+    margin: 10px auto;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    display: block;
+  }
+  
+  .message {
+    color: white;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    width: 500px;
+    margin: 20px auto;
+  }
+  
+  .message-success {
+    background-color: green;
+  }
+  
+  .message-error {
+    background-color: red;
+  }

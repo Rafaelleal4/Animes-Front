@@ -1,19 +1,50 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 import MangaList from './components/MangaList/MangaList';
 import Login from './components/Login/Login';
 import Register from './components/Register/Register';
 import Favorites from './components/Favorites/Favorites';
+import MangaDetails from './components/MangaDetails/MangaDetails';
+import axios from 'axios';
 
 function App() {
   const [favorites, setFavorites] = useState([]);
+  const [user, setUser] = useState(null);
 
-  const handleAddToFavorites = (manga) => {
-    if (favorites.some(fav => fav.id === manga.id)) {
-      setFavorites(favorites.filter(fav => fav.id !== manga.id));
-    } else {
-      setFavorites([...favorites, manga]);
+  const fetchUserData = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/auth/user');
+      setUser(response.data.user);
+      setFavorites(response.data.favorites);
+    } catch (error) {
+      console.error('Erro ao buscar dados do usuário:', error);
+      if (error.response && error.response.status === 404) {
+        console.error('Rota /auth/user não encontrada');
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (user) {
+      console.log('Usuário logado:', user);
+      fetchUserData();
+    }
+  }, [user]);
+
+  const handleAddToFavorites = async (manga) => {
+    if (!user) {
+      console.error('Usuário não está logado');
+      return;
+    }
+  
+    console.log('Adicionando aos favoritos:', { mangaId: manga.id, userId: user.id });
+  
+    try {
+      const response = await axios.post('http://localhost:5000/favorites', { mangaId: manga.id, userId: user.id });
+      setFavorites(response.data.favorites);
+    } catch (error) {
+      console.error('Erro ao adicionar aos favoritos:', error);
     }
   };
 
@@ -28,22 +59,32 @@ function App() {
           <h1>Bem-vindo ao Manga/Anime Finder</h1>
         </header>
         <Routes>
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Login setUser={setUser} />} />
           <Route path="/register" element={<Register />} />
           <Route path="/manga" element={
-            <MangaList
-              favorites={favorites}
-              handleAddToFavorites={handleAddToFavorites}
-              isFavorite={isFavorite}
-            />
+            user ? (
+              <MangaList
+                favorites={favorites}
+                handleAddToFavorites={handleAddToFavorites}
+                isFavorite={isFavorite}
+                user={user}
+              />
+            ) : (
+              <Navigate to="/login" />
+            )
           } />
           <Route path="/favorites" element={
-            <Favorites
-              favorites={favorites}
-              handleAddToFavorites={handleAddToFavorites}
-              isFavorite={isFavorite}
-            />
+            user ? (
+              <Favorites
+                favorites={favorites}
+                handleAddToFavorites={handleAddToFavorites}
+                isFavorite={isFavorite}
+              />
+            ) : (
+              <Navigate to="/login" />
+            )
           } />
+          <Route path="/manga/:id" element={<MangaDetails />} />
           <Route path="*" element={<Navigate to="/login" />} />
         </Routes>
       </div>

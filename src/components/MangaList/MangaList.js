@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { FaHeart, FaArrowRight, FaArrowLeft } from 'react-icons/fa';
 import './MangaList.css';
 
-function MangaList({ favorites, handleAddToFavorites, isFavorite }) {
+function MangaList({ favorites, handleAddToFavorites, isFavorite, user }) {
   const [mangas, setMangas] = useState([]);
   const [query, setQuery] = useState('');
   const [genre, setGenre] = useState('');
@@ -19,37 +19,30 @@ function MangaList({ favorites, handleAddToFavorites, isFavorite }) {
     { value: 'drama', label: 'Drama' },
     { value: 'horror', label: 'Horror' },
     { value: 'mystery', label: 'Mistério' },
-    { value: 'sci-fi', label: 'Ficção Científica' },
+    { value: 'romance', label: 'Romance' },
+    { value: 'comedy', label: 'Comédia' },
   ];
 
   useEffect(() => {
     const fetchMangas = async () => {
+      console.log('Fetching mangas with params:', { query, genre, sort, page });
       try {
         const response = await axios.get('https://kitsu.io/api/edge/manga', {
           params: {
             'page[limit]': 10,
             'page[offset]': (page - 1) * 10,
             ...(query && { 'filter[text]': query }),
-            ...(genre && { 'filter[genres]': genre }),
+            ...(genre && { 'filter[categories]': genre }),
             ...(sort && { sort }),
           },
         });
-        const filteredMangas = response.data.data.filter(manga => {
-          const title = manga.attributes.titles.en || manga.attributes.titles.en_jp || manga.attributes.titles.ja_jp;
-          return title;
-        });
-        const sortedMangas = filteredMangas.sort((a, b) => {
-          const titleA = a.attributes.titles.en || a.attributes.titles.en_jp || a.attributes.titles.ja_jp || '';
-          const titleB = b.attributes.titles.en || b.attributes.titles.en_jp || b.attributes.titles.ja_jp || '';
-          return titleA.localeCompare(titleB);
-        });
-        setMangas(sortedMangas);
+        console.log('API response:', response.data);
+        setMangas(response.data.data);
         setHasMore(response.data.data.length > 0);
       } catch (error) {
         console.error('Erro ao buscar mangás:', error);
       }
     };
-
     fetchMangas();
   }, [query, genre, sort, page]);
 
@@ -78,7 +71,7 @@ function MangaList({ favorites, handleAddToFavorites, isFavorite }) {
       <div className="filters">
         <label>
           Gênero:
-          <select value={genre} onChange={(e) => setGenre(e.target.value)}>
+          <select value={genre} onChange={(e) => { setGenre(e.target.value); setPage(1); }}>
             {genres.map((g) => (
               <option key={g.value} value={g.value}>
                 {g.label}
@@ -88,7 +81,7 @@ function MangaList({ favorites, handleAddToFavorites, isFavorite }) {
         </label>
         <label>
           Popularidade:
-          <select value={sort} onChange={(e) => setSort(e.target.value)}>
+          <select value={sort} onChange={(e) => { setSort(e.target.value); setPage(1); }}>
             <option value="">Selecione</option>
             <option value="popularityRank">Mais Popular</option>
             <option value="-popularityRank">Menos Popular</option>
@@ -104,7 +97,7 @@ function MangaList({ favorites, handleAddToFavorites, isFavorite }) {
             {mangas.map((manga, index) => (
               <li key={`${manga.id}-${index}`} className="manga-item">
                 <Link to={`/manga/${manga.id}`} className="manga-title">
-                  {manga.attributes.titles.en || manga.attributes.titles.en_jp || manga.attributes.titles.ja_jp}
+                  {manga.attributes.titles.en || manga.attributes.titles.en_jp || manga.attributes.titles.ja_jp || 'Título Desconhecido'}
                 </Link>
                 <FaHeart
                   onClick={() => handleAddToFavorites(manga)}
