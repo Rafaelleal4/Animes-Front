@@ -28,8 +28,8 @@ function MangaDetails() {
   const { titles, synopsis, posterImage } = manga.attributes;
   const title = titles.en || titles.en_jp || titles.ja_jp;
 
-  // Dividir a sinopse em frases e combinar frases curtas com a próxima frase
-  const sentences = synopsis.split(/(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?)\s/);
+  // Verificar se a sinopse não é null antes de chamar split
+  const sentences = synopsis ? synopsis.split(/(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?)\s/) : [];
   const combinedSentences = sentences.reduce((acc, sentence) => {
     if (acc.length === 0) {
       return [sentence];

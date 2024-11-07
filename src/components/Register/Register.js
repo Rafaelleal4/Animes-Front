@@ -22,7 +22,7 @@ function Register() {
       return;
     }
     try {
-      const response = await axios.post('http://localhost:5000/auth/register', { username, password });
+      const response = await axios.post('http://localhost:5000/api/auth/register', { username, password });
       console.log('Resposta da API:', response);
       setMessage('Registro bem-sucedido');
       setMessageType('success');
@@ -48,21 +48,21 @@ function Register() {
       <form onSubmit={handleSubmit}>
         <h2>Registrar</h2>
         <input
-  type="text"
-  className="input-usuario"
-  placeholder="Usuário"
-  value={username}
-  onChange={(e) => setUsername(e.target.value)}
-  required
-/>
-<input
-  type="password"
-  className="input-senha"
-  placeholder="Senha"
-  value={password}
-  onChange={(e) => setPassword(e.target.value)}
-  required
-/>
+          type="text"
+          className="input-usuario"
+          placeholder="Usuário"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          className="input-senha"
+          placeholder="Senha"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
         <input
           type="password"
           placeholder="Confirmar Senha"

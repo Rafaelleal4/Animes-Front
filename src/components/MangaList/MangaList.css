@@ -71,6 +71,7 @@ ul {
 .manga-item {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   margin-bottom: 10px;
   padding: 10px;
   background-color: #4c4c4c; /* Cor de fundo dos itens */
@@ -85,6 +86,7 @@ ul {
 
 .favorite-icon {
   font-size: 1.5em;
+  margin-left: 10px;
 }
 
 .pagination {

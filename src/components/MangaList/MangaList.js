@@ -29,15 +29,21 @@ function MangaList({ favorites, handleAddToFavorites, isFavorite, user }) {
       try {
         const response = await axios.get('https://kitsu.io/api/edge/manga', {
           params: {
-            'page[limit]': 10,
-            'page[offset]': (page - 1) * 10,
+            'page[limit]': 20, // Fetch more items to account for filtering
+            'page[offset]': (page - 1) * 20,
             ...(query && { 'filter[text]': query }),
             ...(genre && { 'filter[categories]': genre }),
             ...(sort && { sort }),
           },
         });
         console.log('API response:', response.data);
-        setMangas(response.data.data);
+        const filteredMangas = response.data.data.filter(manga => manga.attributes.titles.en || manga.attributes.titles.en_jp || manga.attributes.titles.ja_jp);
+        const sortedMangas = filteredMangas.sort((a, b) => {
+          const titleA = a.attributes.titles.en || a.attributes.titles.en_jp || a.attributes.titles.ja_jp || '';
+          const titleB = b.attributes.titles.en || b.attributes.titles.en_jp || b.attributes.titles.ja_jp || '';
+          return titleA.localeCompare(titleB);
+        }).slice(0, 10); // Ensure only 10 items are displayed
+        setMangas(sortedMangas);
         setHasMore(response.data.data.length > 0);
       } catch (error) {
         console.error('Erro ao buscar mangás:', error);
@@ -97,7 +103,7 @@ function MangaList({ favorites, handleAddToFavorites, isFavorite, user }) {
             {mangas.map((manga, index) => (
               <li key={`${manga.id}-${index}`} className="manga-item">
                 <Link to={`/manga/${manga.id}`} className="manga-title">
-                  {manga.attributes.titles.en || manga.attributes.titles.en_jp || manga.attributes.titles.ja_jp || 'Título Desconhecido'}
+                  {manga.attributes.titles.en || manga.attributes.titles.en_jp || manga.attributes.titles.ja_jp}
                 </Link>
                 <FaHeart
                   onClick={() => handleAddToFavorites(manga)}
