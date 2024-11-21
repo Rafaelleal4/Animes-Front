@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 import MangaList from './components/MangaList/MangaList';
@@ -12,22 +12,31 @@ function App() {
   const [favorites, setFavorites] = useState([]);
   const [user, setUser] = useState(null);
 
-  const fetchUserData = async () => {
+  const fetchFavorites = useCallback(async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/auth/favorites');
+      setFavorites(response.data.favorites);
+    } catch (error) {
+      console.error('Erro ao buscar favoritos:', error);
+    }
+  }, []);
+
+  const fetchUserData = useCallback(async () => {
     try {
       const response = await axios.get('http://localhost:5000/api/auth/user');
       setUser(response.data.user);
-      setFavorites(response.data.favorites);
+      fetchFavorites();
     } catch (error) {
       console.error('Erro ao buscar dados do usuário:', error);
       if (error.response && error.response.status === 404) {
         console.error('Rota /auth/user não encontrada');
       }
     }
-  };
+  }, [fetchFavorites]);
 
   useEffect(() => {
     fetchUserData();
-  }, []);
+  }, [fetchUserData]);
 
   const handleAddToFavorites = async (manga) => {
     if (!user) {
@@ -35,19 +44,28 @@ function App() {
       return;
     }
 
-    console.log('Adicionando aos favoritos:', { mangaId: manga.id, userId: user.id });
-
     try {
-      const response = await axios.post('http://localhost:5000/api/favorites', {
+      const response = await axios.post('http://localhost:5000/api/auth/favorites', {
         mangaId: manga.id,
-        userId: user.id,
         title: manga.attributes.titles.en || manga.attributes.titles.en_jp || manga.attributes.titles.ja_jp || 'Título Desconhecido',
-        // Adicione outros campos necessários aqui
       });
-      console.log('Manga adicionado aos favoritos:', response.data);
-      setFavorites([...favorites, response.data.favorite]); // Atualize a lista de favoritos
+      setFavorites([...favorites, response.data.favorite]);
     } catch (error) {
       console.error('Erro ao adicionar aos favoritos:', error);
+    }
+  };
+
+  const handleRemoveFromFavorites = async (mangaId) => {
+    if (!user) {
+      console.error('Usuário não está logado');
+      return;
+    }
+
+    try {
+      await axios.delete(`http://localhost:5000/api/auth/favorites/${mangaId}`);
+      setFavorites(favorites.filter(fav => fav.mangaId !== mangaId));
+    } catch (error) {
+      console.error('Erro ao remover dos favoritos:', error);
     }
   };
 
@@ -80,7 +98,7 @@ function App() {
             user ? (
               <Favorites
                 favorites={favorites}
-                handleAddToFavorites={handleAddToFavorites}
+                handleRemoveFromFavorites={handleRemoveFromFavorites}
                 isFavorite={isFavorite}
               />
             ) : (

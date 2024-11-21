@@ -3,21 +3,21 @@ import { Link } from 'react-router-dom';
 import { FaHeart } from 'react-icons/fa';
 import './Favorites.css';
 
-function Favorites({ favorites, handleAddToFavorites, isFavorite }) {
+function Favorites({ favorites, handleRemoveFromFavorites, isFavorite }) {
   return (
     <div className="container">
       <h2>Favoritos</h2>
       {favorites.length > 0 ? (
         <ul>
           {favorites.map((manga, index) => (
-            <li key={`${manga.id}-${index}`} className="manga-item">
-              <Link to={`/manga/${manga.id}`} className="manga-title">
-                {manga.attributes.titles.en || manga.attributes.titles.en_jp || manga.attributes.titles.ja_jp}
+            <li key={`${manga.mangaId}-${index}`} className="manga-item">
+              <Link to={`/manga/${manga.mangaId}`} className="manga-title">
+                {manga.title || 'Título Desconhecido'}
               </Link>
               <FaHeart
-                onClick={() => handleAddToFavorites(manga)}
+                onClick={() => handleRemoveFromFavorites(manga.mangaId)}
                 className="favorite-icon"
-                style={{ cursor: 'pointer', color: isFavorite(manga) ? 'red' : 'grey' }}
+                style={{ cursor: 'pointer', color: 'red' }}
               />
             </li>
           ))}
