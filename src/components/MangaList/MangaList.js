@@ -102,11 +102,14 @@ function MangaList({ favorites, handleAddToFavorites, isFavorite, user }) {
           <ul>
             {mangas.map((manga, index) => (
               <li key={`${manga.id}-${index}`} className="manga-item">
-                <Link to={`/manga/${manga.id}`} className="manga-title">
+                <span className="manga-title">
                   {manga.attributes.titles.en || manga.attributes.titles.en_jp || manga.attributes.titles.ja_jp}
-                </Link>
+                </span>
                 <FaHeart
-                  onClick={() => handleAddToFavorites(manga)}
+                  onClick={() => {
+                    console.log('Clicou no coração', manga); // Adicionado para depuração
+                    handleAddToFavorites(manga);
+                  }}
                   className="favorite-icon"
                   style={{ cursor: 'pointer', color: isFavorite(manga) ? 'red' : 'grey' }}
                 />
