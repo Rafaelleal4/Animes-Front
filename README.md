@@ -1,70 +1,149 @@
-# Getting Started with Create React App
+# Manga/Anime Finder
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Bem-vindo ao **Manga/Anime Finder**! Uma aplicação web intuitiva para encontrar seus mangás e animes favoritos. Gerencie sua conta, crie uma lista personalizada de favoritos e explore novos títulos.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 📌 **Funcionalidades**
 
-### `npm start`
+- **Gerenciamento de Conta:**
+  - Cadastro e login de usuários.
+  - Logout para alternância de contas.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Busca e Favoritos:**
+  - Pesquisa de mangás e animes por título.
+  - Adição e remoção de títulos na lista de favoritos.
+  - Visualização da lista de favoritos.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## 🛠 **Tecnologias Utilizadas**
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### **Frontend**
+- [React](https://reactjs.org/) para a interface do usuário.
+- [React Router](https://reactrouter.com/) para navegação.
+- [Axios](https://axios-http.com/) para requisições HTTP.
 
-### `npm run build`
+### **Backend**
+- [Node.js](https://nodejs.org/) para o servidor.
+- [Express](https://expressjs.com/) para a API.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 🚀 **Como Instalar**
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### **Pré-requisitos**
+- Node.js instalado.
+- NPM ou Yarn configurado.
 
-### `npm run eject`
+### **Passos**
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+1. Clone o repositório e acesse a pasta do projeto:
+   ```bash
+   git clone https://github.com/seu-usuario/manga-anime-finder.git
+   cd manga-anime-finder
+   ```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+2. Configure o **Backend**:
+   ```bash
+   cd backend
+   npm install
+   npm start
+   ```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+3. Configure o **Frontend**:
+   ```bash
+   cd ../frontend
+   npm install
+   npm start
+   ```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+4. Acesse o aplicativo no navegador em `http://localhost:3000`.
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 📚 **Como Usar**
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### **Cadastro de Usuário**
+1. Acesse a página de cadastro.
+2. Preencha o nome de usuário e a senha.
+3. Clique em **Registrar**.
 
-### Code Splitting
+### **Login**
+1. Acesse a página de login.
+2. Insira suas credenciais e clique em **Login**.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### **Busca de Mangás/Animes**
+1. Vá para a página de busca.
+2. Insira o título desejado e clique em **Buscar**.
 
-### Analyzing the Bundle Size
+### **Gerenciar Favoritos**
+- **Adicionar:** Clique no ícone de coração ao lado do título nos resultados.
+- **Remover:** Acesse a página de favoritos e clique no ícone de coração ao lado do título.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### **Trocar de Usuário**
+1. Clique em **Logout** no cabeçalho.
 
-### Making a Progressive Web App
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## 🗂 **Estrutura do Projeto**
 
-### Advanced Configuration
+```
+manga-anime-finder/
+├── backend/
+│   ├── index.js
+│   ├── routes/
+│   │   └── auth.js
+│   └── package.json
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Favorites/
+│   │   │   ├── Login/
+│   │   │   ├── MangaList/
+│   │   │   ├── Register/
+│   │   │   └── MangaDetails/
+│   │   ├── App.js
+│   │   ├── App.css
+│   │   └── index.js
+│   └── package.json
+└── README.md
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+---
 
-### Deployment
+## 🤝 **Contribuição**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+1. Faça um fork do projeto.
+2. Crie uma branch para sua feature:
+   ```bash
+   git checkout -b feature/sua-feature
+   ```
+3. Commit suas alterações:
+   ```bash
+   git commit -m "Adiciona nova feature"
+   ```
+4. Faça push para a branch:
+   ```bash
+   git push origin feature/sua-feature
+   ```
+5. Abra um Pull Request.
 
-### `npm run build` fails to minify
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 📜 **Licença**
+
+Este projeto está sob a licença MIT. Consulte o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+---
+
+## 📞 **Contato**
+
+- **Nome:** Rafael Leal  
+- **Email:** [rafaellealsouza4@gmail.com](mailto:rafaellealsouza4@gmail.com)  
+- **GitHub:** [Rafaelleal4](https://github.com/Rafaelleal4)  
+
+**Obrigado por usar o Manga/Anime Finder!** Sinta-se à vontade para compartilhar sugestões ou dúvidas. 😊
+
+--- 
